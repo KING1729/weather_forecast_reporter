@@ -1,6 +1,5 @@
 
 import requests
-import os
 from datetime import datetime
 
 user1_api = 'f995309146b53b7859f2524766a08017'
@@ -18,13 +17,15 @@ while True:
     # ipaddress_vishakapatnam='203.109.75.58'
     # ipaddress_darjeeling='45.250.244.60'
 
-    if ipaddress == "end" or ipaddress == "quit":
+    if ipaddress == "end" or ipaddress == "quit" or ipaddress == "stop":
         break
 
-    response = requests.get("http://ip-api.com/json/" + ipaddress).json()
-    location1 = response['city']
+    #ip-api website part
+    location1 = requests.get("http://ip-api.com/json/" + ipaddress).json()
+    location_city = location1['city']
 
-    complete_api_link = "https://api.openweathermap.org/data/2.5/forecast?q="+location1+"&appid="+user1_api
+    #open weather map website part
+    complete_api_link = "https://api.openweathermap.org/data/2.5/forecast?q="+location_city+"&appid="+user1_api
     api_link = requests.get(complete_api_link)
     api_data1 = api_link.json()
 
@@ -36,7 +37,7 @@ while True:
     date_time = datetime.now().strftime("%d %b %Y | %I:%M:%S %p")
 
     print ("-------------------------------------------------------------")
-    print ("5 Day Weather Forecast of - {} updated at || {}".format(location1.upper(), date_time))
+    print ("5 Day Weather Forecast of - {} updated at || {}".format(location_city.upper(), date_time))
     print ("-------------------------------------------------------------")
 
     print ("Expected Average Temperature  : {:.2f} deg C".format(temp_city))
